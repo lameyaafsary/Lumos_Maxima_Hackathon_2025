@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>লগইন / সাইন আপ</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="site-header">
+      <h1>লগইন / সাইন আপ</h1>
+    </header>
+
+    <section class="page active">
+      <div class="card center">
+        <h2>তথ্য দিন</h2>
+        <form id="loginForm">
+          <label for="name">নাম:</label>
+          <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
+
+          <label for="phone">মোবাইল নম্বর:</label>
+          <input type="tel" id="phone" name="phone" placeholder="০১XXXXXXXXX" required>
+
+          <h3 style="margin-top:20px;">🏡 লোকেশন তথ্য</h3>
+
+          <label for="division">বিভাগ:</label>
+          <input type="text" id="division" name="division" placeholder="যেমন: ঢাকা" required>
+
+          <label for="district">জেলা:</label>
+          <input type="text" id="district" name="district" placeholder="যেমন: গাজীপুর" required>
+
+          <label for="upazila">উপজেলা:</label>
+          <input type="text" id="upazila" name="upazila" placeholder="যেমন: কালিয়াকৈর" required>
+
+          <label for="union">ইউনিয়ন:</label>
+          <input type="text" id="union" name="union" placeholder="যেমন: চন্দ্রা" required>
+
+          <button type="submit">সাবমিট</button>
+        </form>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <small>© 2025 স্বাস্থ্য সহায়তা</small>
+    </footer>
+  </main>
+
+ 
+</body>
+</html>
