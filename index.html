@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>স্বাস্থ্য সহায়তা (Health Help)</title>
+  <link rel="stylesheet" href="style.css" />
+  
+</head>
+<body>
+  <main class="container">
+   
+ 
+    <header class="site-header">
+      <h1>স্বাস্থ্য সহায়তা</h1>
+      <div id="userBox" class="user-box hidden">
+        <span id="userName"></span>
+        <button id="logoutBtn">লগ আউট</button>
+      </div>
+    </header>
+    <section id="home" class="page active">
+      <div class="card center">
+        <h2>স্বাগতম</h2>
+        <p>আপনি কিভাবে চালিয়ে যেতে চান তা নির্বাচন করুন।</p>
+        <div class="actions">
+          <button id="loginBtn">লগইন / সাইন আপ</button>
+          <button id="guestBtn" class="outline">অতিথি লগইন</button>
+        </div>
+      </div>
+    </section>
+    <section id="auth" class="page">
+      <div class="card auth-card">
+        <h2 id="authTitle">লগইন</h2>
+        <form id="authForm">
+          <label>
+            ইমেইল
+            <input type="email" id="email" required />
+          </label>
+          <label>
+            পাসওয়ার্ড
+            <input type="password" id="password" required minlength="4" />
+          </label>
+          <div class="auth-actions">
+            <button type="submit" id="authSubmit">চালিয়ে যান</button>
+            <button type="button" id="switchAuth" class="link">সাইন আপে যান</button>
+          </div>
+        </form>
+        <button id="backFromAuth" class="link small">← ফিরে যান</button>
+      </div>
+    </section>
+    <section id="anonHelp" class="page">
+      <div class="card">
+        <h2>গোপন সাহায্যের অনুরোধ</h2>
+        <form id="anonForm">
+          <label>
+            বিষয়
+            <input type="text" id="anonSubject" required />
+          </label>
+          <label>
+            বিস্তারিত বর্ণনা
+            <textarea id="anonDesc" rows="5" required></textarea>
+          </label>
+          <div class="actions">
+            <button type="submit">অনুরোধ পাঠান</button>
+            <button type="button" id="backFromAnon" class="outline">ফিরে যান</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <section id="dashboard" class="page">
+      <h2>ড্যাশবোর্ড</h2>
+      <div class="tiles">
+        <div class="tile">মানসিক চেক-ইন</div>
+        <div class="tile">স্বাস্থ্য মানচিত্র / তালিকা</div>
+        <div class="tile">চিকিৎসা টিপস</div>
+        <div class="tile">ঔষধ ও চিকিৎসা ট্র্যাকার</div>
+        <div class="tile">স্বাস্থ্য সচেতনতা</div>
+        <div class="tile">আলোচনা ফোরাম</div>
+        <div class="tile">জরুরি সহায়তা</div>
+      </div>
+
+      <div class="card small">
+        <h3>দ্রুত পদক্ষেপ</h3>
+        <div class="actions">
+          <button id="toHome">হোমে যান</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <small>© 2025 স্বাস্থ্য সহায়তা |</small>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
