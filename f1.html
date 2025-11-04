@@ -9,7 +9,7 @@
 <body>
   <header class="site-header">
     <div class="header-buttons">
-      <button onclick="window.history.back()">← ফিরে যান</button>
+      <button onclick="window.history.back()">ফিরে যান</button>
       <button onclick="logout()">লগ আউট</button>
 </div>
 
@@ -120,6 +120,12 @@
       progressCircle.style.strokeDashoffset = offset;
       moodPercent.textContent = avg + "%";
     });
+  </script>
+   <script>
+    function logout(){
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
   </script>
 </body>
 </html>       

@@ -11,8 +11,10 @@
 
 <header>
   <h1>মাতৃত্ব ও শিশুর স্বাস্থ্য ট্র্যাকার</h1>
-  <button onclick="window.history.back()">← ফিরে যান</button>
-  <button onclick="logout()">লগ আউট</button>
+  <div class="header-buttons">
+      <button onclick="window.history.back()">ফিরে যান</button>
+      <button onclick="logout()">লগ আউট</button>
+</div>
 </header>
 
 <main>
@@ -157,5 +159,12 @@ function updateChart(){
   });
 }
 </script>
+<script>
+    function logout(){
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+  </script>
+
 </body>
 </html>

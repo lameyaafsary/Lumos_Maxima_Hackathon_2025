@@ -51,7 +51,7 @@
       color: white;
       border: none;
       cursor: pointer;
-      transition: 0.3s;
+     
     }
     button:hover {
       background: #00796b;
@@ -73,3 +73,9 @@
       font-size: 13px;
       color: #333;
     }
+   .header-buttons {
+    display: flex;           
+    gap: 10px;               
+    justify-content: flex-end; 
+    align-items: center;   
+}

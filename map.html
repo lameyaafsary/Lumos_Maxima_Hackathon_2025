@@ -10,7 +10,12 @@
   <link rel="stylesheet" href="map.css"/>
 </head>
 <body>
-  <header>📍 নিকটস্থ স্বাস্থ্য কেন্দ্র</header>
+  <header>📍 নিকটস্থ স্বাস্থ্য কেন্দ্র
+    <div class="header-buttons">
+      <button onclick="window.history.back()">ফিরে যান</button>
+      <button onclick="logout()">লগ আউট</button>
+</div>
+  </header>
   <div id="main">
     <div id="sidebar">
       <div class="section">
@@ -41,6 +46,7 @@
   <footer>ডেটা: OpenStreetMap | উন্নয়ন: কমিউনিটি হেলথ প্রোটোটাইপ</footer>
 
   <script>
+  
     let map = L.map('map').setView([23.8103, 90.4125], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -99,5 +105,12 @@
       });
     });
   </script>
+  <script>
+    function logout(){
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+  </script>
+
 </body>
 </html>

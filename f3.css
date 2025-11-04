@@ -154,3 +154,9 @@ canvas {
     padding: 6px 10px;
   }
 }
+.header-buttons {
+    display: flex;           
+    gap: 10px;               
+    justify-content: flex-end; 
+    align-items: center;   
+}
