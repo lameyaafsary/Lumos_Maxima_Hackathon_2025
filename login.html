@@ -1,58 +1,65 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>লগইন / সাইন আপ</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>লগইন</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Noto Sans Bengali', sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
+.container { max-width: 400px; margin: 50px auto; }
+.card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+h2 { text-align: center; margin-bottom: 20px; }
+label { display: block; margin-top: 15px; font-weight: 600; }
+input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+.btn { width: 100%; margin-top: 20px; padding: 10px; font-size: 16px; border: none; border-radius: 8px; background: #007bff; color: white; cursor: pointer; }
+.btn:hover { background: #0056b3; }
+.link { display: block; text-align: center; margin-top: 15px; color: #007bff; text-decoration: underline; cursor: pointer; }
+</style>
 </head>
 <body>
-  <main class="container">
-    <header class="site-header">
-      <h1>লগইন / সাইন আপ</h1>
-    </header>
 
-    <section class="page active">
-      <div class="card center">
-        <h2>তথ্য দিন</h2>
-        <form id="loginForm">
-          <label for="name">নাম:</label>
-          <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
-
-          <label for="phone">মোবাইল নম্বর:</label>
-          <input type="tel" id="phone" name="phone" placeholder="০১XXXXXXXXX" required>
-
-          <h3 style="margin-top:20px;">🏡 লোকেশন তথ্য</h3>
-
-          <label for="division">বিভাগ:</label>
-          <input type="text" id="division" name="division" placeholder="যেমন: ঢাকা" required>
-
-          <label for="district">জেলা:</label>
-          <input type="text" id="district" name="district" placeholder="যেমন: গাজীপুর" required>
-
-          <label for="upazila">উপজেলা:</label>
-          <input type="text" id="upazila" name="upazila" placeholder="যেমন: কালিয়াকৈর" required>
-
-          <label for="union">ইউনিয়ন:</label>
-          <input type="text" id="union" name="union" placeholder="যেমন: চন্দ্রা" required>
-
-          <button type="submit">সাবমিট</button>
-        </form>
-      </div>
-    </section>
-
-    <footer class="site-footer">
-      <small>© 2025 স্বাস্থ্য সহায়তা</small>
-    </footer>
-  </main>
-
-</form>
+<div class="container">
+  <div class="card">
+    <h2>লগইন</h2>
+    <form id="loginForm">
+      <label>ইমেইল
+        <input type="email" id="loginEmail" placeholder="উদাহরণ: example@email.com" required>
+      </label>
+      <label>পাসওয়ার্ড
+        <input type="password" id="loginPassword" placeholder="••••••" required minlength="4">
+      </label>
+      <button type="submit" class="btn">লগইন করুন</button>
+    </form>
+    <span id="backToHome" class="link">← হোমে ফিরে যান</span>
+  </div>
+</div>
 
 <script>
-document.getElementById('loginForm').addEventListener('submit', function(e){
+const $ = (id) => document.getElementById(id);
+
+window.addEventListener('load', () => {
+  const user = localStorage.getItem('user');
+  if(user) window.location.href = 'dashboard.html';
+});
+
+$('#loginForm').addEventListener('submit', function(e){
   e.preventDefault();
-  window.location.href = 'dashboard.html'; 
+  const email = $('#loginEmail').value;
+  const password = $('#loginPassword').value;
+
+  // ইউজার ইনফো localStorage-এ সংরক্ষণ
+  localStorage.setItem('user', email);
+
+  alert('লগইন সফল হয়েছে ✅');
+
+  // ড্যাশবোর্ডে রিডাইরেক্ট
+  window.location.href = 'dashboard.html'; // ড্যাশবোর্ড পেজের লিঙ্ক
+});
+
+// হোমে ফিরে যাওয়া
+$('#backToHome').addEventListener('click', () => {
+  window.location.href = 'index.html'; // হোম পেজের লিঙ্ক
 });
 </script>
 

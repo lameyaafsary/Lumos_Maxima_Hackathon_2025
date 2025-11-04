@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সাইন আপ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans Bengali', sans-serif; background:#c9e7e4; margin: 0; padding: 0; }
+    .container { max-width: 400px; margin: 50px auto; }
+    .card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    h2 { text-align: center; margin-bottom: 20px; }
+    label { display: block; margin-top: 15px; font-weight: 600; }
+    input { width: 100%; padding: 10px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+    .btn { width: 100%; margin-top: 20px; padding: 10px; font-size: 16px; border: none; border-radius: 8px; background:#00897b; color: #9cd8d2; cursor: pointer; }
+    .btn:hover { background:#00897b; }
+    .link { display: block; text-align: center; margin-top: 15px; color:#172120; text-decoration: underline; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>সাইন আপ</h2>
+      <form id="signupForm">
+        <label>ইমেইল
+          <input type="email" id="signupEmail" placeholder="উদাহরণ: example@email.com" required>
+        </label>
+        <label>পাসওয়ার্ড
+          <input type="password" id="signupPassword" placeholder="••••••" required minlength="4">
+        </label>
+        <button type="submit" class="btn">সাইন আপ করুন</button>
+      </form>
+      <span id="backToHome" class="link">← হোমে ফিরে যান</span>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    
+    $('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = $('signupEmail').value;
+      const password = $('signupPassword').value;
+
+      
+      localStorage.setItem('user', email);
+
+      alert('সাইন আপ সফল হয়েছে ✅');
+
+      window.location.href = 'dashboard.html'; 
+    });
+
+    
+    $('backToHome').addEventListener('click', () => {
+      window.location.href = 'index.html'; 
+    });
+  </script>
+</body>
+</html>
