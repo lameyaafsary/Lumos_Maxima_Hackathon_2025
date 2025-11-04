@@ -1,0 +1,52 @@
+body {
+      font-family: 'Noto Sans Bengali', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f4f8;
+      color: #333;
+    }
+    header {
+      background:#00897b ;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h2 { margin-top: 2rem; }
+
+    .card-slider {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 1rem;
+      padding-bottom: 1rem;
+    }
+    .card {
+      flex: 0 0 250px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 1rem;
+      scroll-snap-align: start;
+      transition: transform 0.3s;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card h3 { margin-top: 0; font-size: 1.2rem; color:#00897b; }
+    .card p { font-size: 0.95rem; }
+
+    .notification {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background:#00897b;
+      color: white;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: none;
+      max-width: 350px;
+    }

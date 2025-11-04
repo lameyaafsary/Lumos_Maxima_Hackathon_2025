@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>গোপন সহায়তা অনুরোধ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="ano.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>গোপন সহায়তা অনুরোধ</h1>
+    <p>আপনার তথ্য সম্পূর্ণ গোপন রাখা হবে এবং এটি নিরাপদভাবে প্রেরণ করা হবে।</p>
+
+    <form id="helpRequestForm">
+      <label for="requestInput" style="font-size: 1rem; color: #1E3A8A;">আপনার অনুরোধটি লিখুন:</label>
+      <textarea id="requestInput" class="input-field" placeholder="এখানে আপনার বার্তা লিখুন..."></textarea>
+
+      <p>আপনার পরিচয় প্রকাশ করা হবে না।</p>
+
+      <button type="button" class="submit-btn" onclick="submitForm()">অনুরোধ পাঠান</button>
+    </form>
+
+    <div class="notification" id="notification">
+      ✅ আপনার অনুরোধটি সফলভাবে পাঠানো হয়েছে। আগামী ৪৮ ঘণ্টার মধ্যে একজন পেশাজীবী আপনার সঙ্গে যোগাযোগ করবেন।
+    </div>
+  </div>
+
+  <script>
+    function submitForm() {
+      document.getElementById('helpRequestForm').style.display = 'none';
+      document.getElementById('notification').style.display = 'block';
+    }
+  </script>
+
+</body>
+</html>

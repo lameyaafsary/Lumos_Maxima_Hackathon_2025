@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>রোগ ও উপসর্গ গাইড</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Noto Sans Bengali', sans-serif;
+      background:#e0f2f1;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 { text-align: center; color: #333; margin-bottom: 20px; }
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      width: 60%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    .symptom-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 15px;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+      cursor: default;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: scale(1.03); }
+    .card img {
+      width: 50px;
+      margin-bottom: 10px;
+    }
+    .card h3 { margin: 10px 0 5px; color: #333; }
+    .card p { font-size: 14px; color: #555; text-align: left; margin: 5px 0; }
+    .card strong { color: #222; }
+  </style>
+</head>
+<body>
+
+<h1>সাধারণ রোগ ও উপসর্গ</h1>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="উপসর্গ লিখুন... যেমন: জ্বর">
+</div>
+
+<div class="symptom-cards" id="symptomCards"></div>
+
+<script>
+  const symptoms = [
+    { name: "জ্বর", icon: "https://img.icons8.com/ios-filled/50/000000/thermometer.png", description: "শরীরের তাপমাত্রা স্বাভাবিকের থেকে অনেক বেড়ে যাওয়া। সাধারণত শরীর সংক্রমণের বিরুদ্ধে প্রতিরোধ গড়ে তোলার অংশ হিসেবে জ্বর হয়।", causes: "বিভিন্ন ভাইরাস বা ব্যাকটেরিয়া সংক্রমণ, তাপমাত্রার পরিবর্তন, বা অনিয়মিত খাদ্যাভ্যাস।", doctorAdvice: "৩ দিনের বেশি জ্বর থাকলে বা উচ্চ জ্বর (১০২°F বা ৩৮.৯°C এর বেশি) হলে ডাক্তারের পরামর্শ নিন। জ্বরের সঙ্গে অতিরিক্ত ক্লান্তি, মাথা ঘোরা, বা শ্বাসকষ্ট থাকলে তৎক্ষণাৎ চিকিৎসা নিন।" },
+    { name: "গলা ব্যথা", icon: "https://img.icons8.com/ios-filled/50/000000/sore-throat.png", description: "গলা ফুলে যাওয়া বা কাঁপা, গলা নোংরা বা ব্যথা অনুভব হওয়া।", causes: "সর্দি, ভাইরাস সংক্রমণ, ব্যাকটেরিয়ার সংক্রমণ, ঠাণ্ডা পানীয় বা ঠান্ডা বাতাসের সংস্পর্শ।", doctorAdvice: "৭ দিনের বেশি গলা ব্যথা থাকলে, গলা লাল বা ফোস্কাযুক্ত হলে বা খাদ্যগ্রহণে সমস্যা হলে ডাক্তারের পরামর্শ নিন। গরম পানীয় এবং গলাবিশেষ সতর্কতা গ্রহণ করুন।" },
+    { name: "সর্দি", icon: "https://img.icons8.com/ios-filled/50/000000/runny-nose.png", description: "নাক দিয়ে জল পড়া, নাক বন্ধ থাকা বা হাঁচি।", causes: "হালকা ভাইরাস সংক্রমণ, ঠাণ্ডা বা অ্যালার্জি।", doctorAdvice: "সাধারণত ৫-৭ দিনের মধ্যে সর্দি ঠিক হয়ে যায়। দীর্ঘস্থায়ী সর্দি বা জ্বর, শ্বাসকষ্ট, নাক থেকে রক্ত পড়লে ডাক্তারের পরামর্শ নিন।" },
+    { name: "মাথাব্যথা", icon: "https://img.icons8.com/ios-filled/50/000000/headache.png", description: "মাথায় চাপ, টান বা ধকধক ব্যথা অনুভূত হওয়া।", causes: "অধিক মানসিক চাপ, ঘুমের অভাব, ডিহাইড্রেশন, চোখের ক্লান্তি।", doctorAdvice: "দীর্ঘস্থায়ী বা তীব্র মাথাব্যথা, চোখে সমস্যা বা মাথা ঘোরা থাকলে ডাক্তারের পরামর্শ নিন। পর্যাপ্ত বিশ্রাম নিন এবং পানি বেশি খান।" },
+    { name: "অন্ত্রব্যথা", icon: "https://img.icons8.com/ios-filled/50/000000/stomach.png", description: "পেটে ব্যথা, খিঁচুনি বা অস্বস্তি অনুভূত হওয়া।", causes: "খাবার হজমের সমস্যা, সংক্রমণ, খাবারে অ্যালার্জি বা অতিরিক্ত ফ্যাটি খাবার।", doctorAdvice: "জ্বর, বমি, বা রক্তমিশ্রিত পায়খানা থাকলে দ্রুত ডাক্তারের পরামর্শ নিন। হালকা ব্যথা হলে গরম পানীয় ও হালকা খাবার খান।" },
+    { name: "কাশি", icon: "https://img.icons8.com/ios-filled/50/000000/cough.png", description: "শ্বাস-প্রশ্বাসের সময় কাশি হওয়া, শুকনো বা আর্দ্র।", causes: "সর্দি, শ্বাসনালী সংক্রমণ, ধুলো, অ্যালার্জি বা ধূমপান।", doctorAdvice: "দীর্ঘস্থায়ী কাশি বা শ্বাসকষ্ট থাকলে ডাক্তারের পরামর্শ নিন। ঘর পরিষ্কার রাখুন ও গরম পানীয় পান করুন।" },
+    { name: "হাঁচি", icon: "https://img.icons8.com/ios-filled/50/000000/sneeze.png", description: "হঠাৎ নাক দিয়ে বাতাস বের হওয়া এবং শ্বাসের সাথে জ্বালা অনুভূত হওয়া।", causes: "অ্যালার্জি, ঠাণ্ডা, ধুলো, বা ভাইরাস সংক্রমণ।", doctorAdvice: "প্রয়োজনে অ্যান্টি-অ্যালার্জি ওষুধ ব্যবহার করুন। দীর্ঘস্থায়ী বা অতিরিক্ত হাঁচি হলে ডাক্তারের পরামর্শ নিন।" },
+    { name: "দাঁতের ব্যথা", icon: "https://img.icons8.com/ios-filled/50/000000/toothache.png", description: "দাঁতে ব্যথা বা চাপ অনুভব।", causes: "দাঁতের ক্ষয়, ক্যাভিটি, দাঁতের সংক্রমণ।", doctorAdvice: "দাঁতের ডাক্তার দেখান। ব্যথা হালকা থাকলেও চেকআপ করা জরুরি। নিয়মিত দাঁত মাজা ও ফ্লস ব্যবহার করুন।" },
+    { name: "চোখ লাল হওয়া", icon: "https://img.icons8.com/ios-filled/50/000000/red-eye.png", description: "চোখ লাল, চুলকানো বা পানি পড়া।", causes: "অ্যালার্জি, চোখের সংক্রমণ, ধুলো বা ক্লান্তি।", doctorAdvice: "দীর্ঘস্থায়ী বা ব্যথাযুক্ত চোখ লাল হলে চক্ষু বিশেষজ্ঞ দেখান। চোখ ধোয়ার জন্য স্যালাইন ব্যবহার করুন।" },
+    { name: "গ্যাস্ট্রিক", icon: "https://img.icons8.com/ios-filled/50/000000/gastric.png", description: "পেটে অ্যাসিড বা জ্বালা অনুভব।", causes: "খাবার খারাপ, হজমের সমস্যা, অতিরিক্ত মশলাযুক্ত খাবার।", doctorAdvice: "প্রয়োজনে হজমের ওষুধ নিন। দীর্ঘস্থায়ী জ্বালা থাকলে চিকিৎসকের পরামর্শ নিন।" },
+    { name: "দৃষ্টি অস্পষ্টতা", icon: "https://img.icons8.com/ios-filled/50/000000/blur.png", description: "দৃষ্টি ঝাপসা বা অস্পষ্ট দেখা।", causes: "দৃষ্টি ক্লান্তি, চোখের সমস্যা, দীর্ঘক্ষণ স্ক্রিন দেখার অভ্যাস।", doctorAdvice: "চোখের ডাক্তার দেখান। নিয়মিত চোখ বিশ্রাম নিন ও স্ক্রিন টাইম সীমিত করুন।" },
+    { name: "হৃদস্পন্দন বেড়ে যাওয়া", icon: "https://img.icons8.com/ios-filled/50/000000/heart-rate.png", description: "হৃৎপিণ্ড দ্রুত ধকধক করা বা অনিয়মিত স্পন্দন।", causes: "চিন্তা, ব্যায়াম, উচ্চ রক্তচাপ, বা হার্টের সমস্যা।", doctorAdvice: "দীর্ঘস্থায়ী বা তীব্র হলে ডাক্তারের পরামর্শ নিন। রক্তচাপ নিয়ন্ত্রণে রাখুন।" },
+    { name: "পেশীর ব্যথা", icon: "https://img.icons8.com/ios-filled/50/000000/muscle.png", description: "পেশীতে ব্যথা, টান বা অস্বস্তি।", causes: "অধিক পরিশ্রম, ফ্লু, অ্যান্টি-ইনফ্লামেটরি অভাব।", doctorAdvice: "হালকা ব্যথার জন্য বিশ্রাম ও হালকা পেইন রিলিভার ব্যবহার করুন। দীর্ঘস্থায়ী বা তীব্র ব্যথার জন্য ডাক্তার দেখান।" },
+    { name: "হঠাৎ ক্লান্তি", icon: "https://img.icons8.com/ios-filled/50/000000/tired.png", description: "হঠাৎ শক্তি কমে যাওয়া বা দুর্বলতা অনুভব।", causes: "নিদ্রাহীনতা, ডিহাইড্রেশন, সংক্রমণ বা খারাপ খাদ্যাভ্যাস।", doctorAdvice: "দীর্ঘস্থায়ী দুর্বলতা বা সহনশীলতা কম থাকলে ডাক্তারের পরামর্শ নিন। পর্যাপ্ত পানি পান ও বিশ্রাম নিন।" },
+    { name: "জ্বালা ধরা/চুলকানো", icon: "https://img.icons8.com/ios-filled/50/000000/itchy-skin.png", description: "ত্বকে জ্বালা বা চুলকানি অনুভব।", causes: "অ্যালার্জি, ত্বকের সংক্রমণ, খারাপ স্কিন কেয়ার।", doctorAdvice: "প্রয়োজনে ডার্মাটোলজিস্ট দেখান। অ্যালার্জি রোধে হাইপোঅ্যালার্জেনিক সাবান ব্যবহার করুন।" }
+  ];
+
+  const cardsContainer = document.getElementById("symptomCards");
+  const searchInput = document.getElementById("searchInput");
+
+  function displaySymptoms(filteredSymptoms) {
+    cardsContainer.innerHTML = "";
+    filteredSymptoms.forEach(symptom => {
+      if(symptom.icon) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${symptom.icon}" alt="${symptom.name}">
+          <h3>${symptom.name}</h3>
+          <p><strong>বর্ণনা:</strong> ${symptom.description}</p>
+          <p><strong>কারণ:</strong> ${symptom.causes}</p>
+          <p><strong>ডক্টর পরামর্শ:</strong> ${symptom.doctorAdvice}</p>
+        `;
+        cardsContainer.appendChild(card);
+      }
+    });
+  }
+
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    const filtered = symptoms.filter(s => s.name.includes(query));
+    displaySymptoms(filtered);
+  });
+
+  displaySymptoms(symptoms);
+</script>
+
+</body>
+</html>

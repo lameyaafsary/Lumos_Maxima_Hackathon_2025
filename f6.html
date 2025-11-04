@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ভয়েস সহায়ক স্বাস্থ্য সহকারী</title>
+<link rel="stylesheet" href="f6.css">
+</head>
+<body>
+<header>
+    <div class="header-buttons">
+      <button class="header-btn" onclick="window.history.back()">ফিরে যান</button>
+      <button class="header-btn" onclick="logout()">লগআউট</button>
+    </div>
+  </header>
+
+<h1>🎤 ভয়েস সহায়ক স্বাস্থ্য সহকারী</h1>
+<p>বাটনে ক্লিক করে কথা বলুন, তারপর ভয়েস কমান্ড শুনুন</p>
+
+<button id="voiceBtn">🎙️ বলুন</button>
+
+<div id="output">আপনার কথা এখানে দেখাবে...</div>
+
+<script>
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    alert("দুঃখিত, আপনার ব্রাউজার ভয়েস ফিচার সাপোর্ট করে না। Chrome/Edge ব্যবহার করুন।");
+  } else {
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'bn-BD';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    const output = document.getElementById("output");
+    const button = document.getElementById("voiceBtn");
+
+    button.addEventListener("click", () => {
+      recognition.start();
+      output.textContent = "শুনছি...";
+    });
+
+    recognition.addEventListener("result", (event) => {
+      const transcript = event.results[0][0].transcript;
+      output.textContent = `আপনি বললেন: "${transcript}"`;
+      const utter = new SpeechSynthesisUtterance();
+      utter.lang = 'bn-BD';
+      if (transcript.includes("হাসপাতাল")) {
+        utter.text = "আপনার কাছে নিকটস্থ হাসপাতাল: রাজধানী হাসপাতাল, ঢাকা।";
+      } else if (transcript.includes("সুস্থতা")) {
+        utter.text = "আজকের স্বাস্থ্য টিপস: পর্যাপ্ত পানি পান করুন এবং বিশ্রাম নিন।";
+      } else {
+        utter.text = "দুঃখিত, আমি বুঝতে পারিনি। আবার বলুন।";
+      }
+      speechSynthesis.speak(utter);
+    });
+
+    recognition.addEventListener("speechend", () => {
+      recognition.stop();
+    });
+
+    recognition.addEventListener("error", (e) => {
+      output.textContent = "ত্রুটি: " + e.error;
+    });
+  }
+</script>
+
+</body>
+</html>

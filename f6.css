@@ -1,0 +1,32 @@
+body {
+    font-family: "Noto Sans Bengali", Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+    background: #cfe2e0
+  }
+  button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    background:#00897b;;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #00897b;
+  }
+  #output {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #333;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    min-height: 50px;
+  }
+  .header-buttons {
+    display: flex;
+    gap: 10px;
+  }

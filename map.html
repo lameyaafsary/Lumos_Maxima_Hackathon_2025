@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>নিকটস্থ স্বাস্থ্য কেন্দ্র মানচিত্র</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="map.css"/>
+</head>
+<body>
+  <header>📍 নিকটস্থ স্বাস্থ্য কেন্দ্র</header>
+  <div id="main">
+    <div id="sidebar">
+      <div class="section">
+        <h2>আপনার অবস্থান</h2>
+        <button id="locateBtn">📍 আমার অবস্থান খুঁজুন</button>
+        <p id="status" style="font-size:13px;color:#555;">অবস্থান নির্ধারণ করা হয়নি</p>
+      </div>
+
+      <div class="section">
+        <h2>সার্চ করুন</h2>
+        <input type="text" id="searchInput" placeholder="যেমন: ক্লিনিক, ফার্মেসি, হাসপাতাল">
+        <select id="radius">
+          <option value="1000">১ কিমি</option>
+          <option value="3000" selected>৩ কিমি</option>
+          <option value="5000">৫ কিমি</option>
+          <option value="10000">১০ কিমি</option>
+        </select>
+        <button id="searchBtn">🔍 খুঁজুন</button>
+      </div>
+
+      <div class="section">
+        <h2>ফলাফল</h2>
+        <div id="results"></div>
+      </div>
+    </div>
+    <div id="map"></div>
+  </div>
+  <footer>ডেটা: OpenStreetMap | উন্নয়ন: কমিউনিটি হেলথ প্রোটোটাইপ</footer>
+
+  <script>
+    let map = L.map('map').setView([23.8103, 90.4125], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    let markers = L.layerGroup().addTo(map);
+    let userLocation = null;
+
+    document.getElementById('locateBtn').addEventListener('click', () => {
+      if (navigator.geolocation) {
+        document.getElementById('status').textContent = 'অবস্থান পাওয়া যাচ্ছে...';
+        navigator.geolocation.getCurrentPosition(pos => {
+          userLocation = [pos.coords.latitude, pos.coords.longitude];
+          map.setView(userLocation, 15);
+          L.marker(userLocation).addTo(map).bindPopup('আপনার বর্তমান অবস্থান').openPopup();
+          document.getElementById('status').textContent = 'অবস্থান পাওয়া গেছে ✅';
+        }, () => {
+          document.getElementById('status').textContent = 'অবস্থান পাওয়া যায়নি ❌';
+        });
+      } else {
+        alert('আপনার ব্রাউজারে লোকেশন সাপোর্ট করে না');
+      }
+    });
+
+    document.getElementById('searchBtn').addEventListener('click', async () => {
+      const query = document.getElementById('searchInput').value.trim();
+      const radius = document.getElementById('radius').value;
+      if (!query) return alert('সার্চ করার জন্য নাম লিখুন');
+
+      const center = userLocation || [23.8103, 90.4125];
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=15&viewbox=${center[1]-0.1},${center[0]+0.1},${center[1]+0.1},${center[0]-0.1}&bounded=1`;
+
+      document.getElementById('results').innerHTML = '<p>সার্চ চলছে...</p>';
+      const res = await fetch(url);
+      const data = await res.json();
+
+      markers.clearLayers();
+      document.getElementById('results').innerHTML = '';
+
+      if (data.length === 0) {
+        document.getElementById('results').innerHTML = '<p>কোনো ফলাফল পাওয়া যায়নি</p>';
+        return;
+      }
+
+      data.forEach(place => {
+        const lat = parseFloat(place.lat);
+        const lon = parseFloat(place.lon);
+        const name = place.display_name.split(',')[0];
+        const marker = L.marker([lat, lon]).addTo(markers).bindPopup(`<strong>${name}</strong><br>${place.display_name}`);
+
+        const div = document.createElement('div');
+        div.className = 'result';
+        div.innerHTML = `<strong>${name}</strong><small>${place.display_name}</small><br><button onclick="map.setView([${lat}, ${lon}], 16)">📍 দেখুন</button>`;
+        document.getElementById('results').appendChild(div);
+      });
+    });
+  </script>
+</body>
+</html>

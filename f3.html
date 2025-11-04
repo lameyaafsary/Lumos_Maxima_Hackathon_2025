@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maternal & Child Tracker</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="f3.css">
+</head>
+<body>
+
+<header>
+  <h1>মাতৃত্ব ও শিশুর স্বাস্থ্য ট্র্যাকার</h1>
+  <button onclick="window.history.back()">← ফিরে যান</button>
+  <button onclick="logout()">লগ আউট</button>
+</header>
+
+<main>
+<section>
+<h2>🤰 গর্ভকালীন সপ্তাহভিত্তিক গাইডলাইন</h2>
+<label for="preg-week">সপ্তাহ নির্বাচন করুন:</label>
+<input type="number" id="preg-week" min="1" max="40" placeholder="1-40">
+<button onclick="showPregGuideline()">দেখুন</button>
+<p id="preg-guideline"></p>
+</section>
+<section>
+<h2>💉 টিকাদান ক্যালেন্ডার ও রিমাইন্ডার (ম্যানুয়াল)</h2>
+<label for="vaccine-name">টিকার নাম:</label>
+<input type="text" id="vaccine-name" placeholder="যেমন: BCG">
+<label for="vaccine-date">তারিখ নির্বাচন করুন:</label>
+<input type="date" id="vaccine-date">
+<button onclick="addVaccine()">যোগ করুন</button>
+<ul id="vaccine-list"></ul>
+</section>
+<section>
+<h2>🗓️ শিশুর স্বয়ংক্রিয় টিকা সূচি</h2>
+<label for="birthdate">শিশুর জন্মতারিখ:</label>
+<input type="date" id="birthdate">
+<button onclick="generateVaccineSchedule()">টিকা সূচি দেখুন</button>
+<ul id="auto-vaccine-list"></ul>
+</section>
+<section>
+<h2>🍼 শিশুর ওজন ও উচ্চতা ট্র্যাক</h2>
+<label for="child-age">বয়স (মাস):</label>
+<input type="number" id="child-age" min="0" placeholder="মাসে">
+<label for="child-weight">ওজন (কেজি):</label>
+<input type="number" step="0.1" id="child-weight" placeholder="কেজি">
+<label for="child-height">উচ্চতা (সেমি):</label>
+<input type="number" step="0.1" id="child-height" placeholder="সেমি">
+<button onclick="addChildData()">যোগ করুন</button>
+
+<table>
+<thead>
+<tr>
+<th>বয়স (মাস)</th><th>ওজন (কেজি)</th><th>উচ্চতা (সেমি)</th>
+</tr>
+</thead>
+<tbody id="child-table"></tbody>
+</table>
+
+<canvas id="childChart"></canvas>
+</section>
+</main>
+
+<script>
+function showPregGuideline(){
+  const week=document.getElementById('preg-week').value;
+  const guideline=document.getElementById('preg-guideline');
+  if(week>=1 && week<=40){ 
+    guideline.textContent=`আপনি ${week} সপ্তাহের গর্ভে আছেন। নিয়মিত ডাক্তার দেখান এবং সঠিক পুষ্টি নিন।`; 
+  }
+  else guideline.textContent="১ থেকে ৪০ সপ্তাহের মধ্যে একটি সংখ্যা লিখুন।";
+}
+
+function addVaccine(){
+  const name=document.getElementById('vaccine-name').value;
+  const date=document.getElementById('vaccine-date').value;
+  const list=document.getElementById('vaccine-list');
+  if(name && date){
+    const li=document.createElement('li');
+    li.textContent=`${name} - ${date}`;
+    list.appendChild(li);
+    document.getElementById('vaccine-name').value='';
+    document.getElementById('vaccine-date').value='';
+    const today=new Date();
+    const vacDate=new Date(date);
+    const diffDays=Math.floor((vacDate-today)/(1000*60*60*24));
+    if(diffDays===0) alert(`আজ ${name} টিকার দিন!`);
+    else if(diffDays>0 && diffDays<=3) alert(`${name} টিকার জন্য ${diffDays} দিনের মধ্যে সময় আসছে।`);
+  } else alert("টিকার নাম ও তারিখ উভয়ই পূরণ করুন।");
+}
+
+const vaccines = [
+  {name: "BCG", month:0},
+  {name: "HepB-1", month:0},
+  {name: "OPV-0", month:0},
+  {name: "DTP/HepB/Hib-1", month:6},
+  {name: "OPV-1", month:6},
+  {name: "DTP/HepB/Hib-2", month:10},
+  {name: "OPV-2", month:10},
+  {name: "DTP/HepB/Hib-3", month:14},
+  {name: "OPV-3", month:14},
+  {name: "Measles-1", month:9},
+  {name: "Measles-2", month:15},
+];
+
+function generateVaccineSchedule(){
+  const birthdateInput = document.getElementById('birthdate').value;
+  const list = document.getElementById('auto-vaccine-list');
+  list.innerHTML = '';
+  if(!birthdateInput){ alert("জন্মতারিখ দিন।"); return; }
+  const birthDate = new Date(birthdateInput);
+  vaccines.sort((a,b) => a.month - b.month);
+  vaccines.forEach((vaccine,index)=>{
+    const vacDate = new Date(birthDate);
+    vacDate.setMonth(vacDate.getMonth() + vaccine.month);
+    const li=document.createElement('li');
+    li.textContent=`${index+1}. ${vaccine.name} - ${vacDate.toLocaleDateString('bn-BD')}`;
+    list.appendChild(li);
+  });
+}
+
+let childData={age:[],weight:[],height:[]};
+let chart;
+
+function addChildData(){
+  const age=document.getElementById('child-age').value;
+  const weight=document.getElementById('child-weight').value;
+  const height=document.getElementById('child-height').value;
+  const table=document.getElementById('child-table');
+   if(age && weight && height){
+    const row=table.insertRow();
+    row.insertCell(0).textContent=age;
+    row.insertCell(1).textContent=weight;
+    row.insertCell(2).textContent=height;
+    childData.age.push(age); childData.weight.push(weight); childData.height.push(height);
+    updateChart();
+    document.getElementById('child-age').value='';
+    document.getElementById('child-weight').value='';
+    document.getElementById('child-height').value='';
+  } else alert("সব তথ্য পূরণ করুন।");
+}
+
+function updateChart(){
+  const ctx=document.getElementById('childChart').getContext('2d');
+  if(chart) chart.destroy();
+  chart=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:childData.age,
+      datasets:[
+        {label:'ওজন (কেজি)',data:childData.weight,borderColor:'#ff7f50',backgroundColor:'rgba(255,127,80,0.2)',tension:0.3},
+        {label:'উচ্চতা (সেমি)',data:childData.height,borderColor:'#ff5722',backgroundColor:'rgba(255,87,34,0.2)',tension:0.3}
+      ]
+    },
+    options:{responsive:true, plugins:{legend:{position:'top'}}, scales:{x:{title:{display:true,text:'বয়স (মাস)'}},y:{title:{display:true,text:'পরিমাণ'}}}}
+  });
+}
+</script>
+</body>
+</html>

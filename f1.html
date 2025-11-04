@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>মানসিক চেক-ইন</title>
+  <link rel="stylesheet" href="f1.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-buttons">
+      <button onclick="window.history.back()">← ফিরে যান</button>
+      <button onclick="logout()">লগ আউট</button>
+</div>
+
+    <h1>মানসিক চেক-ইন</h1>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2>আজকের প্রশ্নাবলী</h2>
+      
+      <form id="checkinForm">
+        <label>১. আজ আপনি কেমন অনুভব করছেন?</label>
+        <select name="q1" required>
+          <option value="" disabled selected>মেজাজ বেছে নিন</option>
+          <option value="100">খুব ভালো</option>
+          <option value="75">ভালো</option>
+          <option value="50">মাঝারি</option>
+          <option value="25">খারাপ</option>
+          <option value="0">খুব খারাপ</option>
+        </select>
+
+        <label>২. আজ আপনার এনার্জি লেভেল কেমন?</label>
+        <select name="q2" required>
+          <option value="" disabled selected>লেভেল বেছে নিন</option>
+          <option value="100">উচ্চ</option>
+          <option value="75">মাঝারি</option>
+          <option value="50">কম</option>
+          <option value="25">খুব কম</option>
+          <option value="0">না</option>
+        </select>
+
+        <label>৩. আজ আপনি কতটা চাপ অনুভব করছেন?</label>
+        <select name="q3" required>
+          <option value="" disabled selected>চাপের মাত্রা</option>
+          <option value="100">না</option>
+          <option value="75">কম</option>
+          <option value="50">মাঝারি</option>
+          <option value="25">উচ্চ</option>
+          <option value="0">খুব উচ্চ</option>
+        </select>
+        <form id="checkinForm">
+            <label>৪. গত রাতে আপনি কেমন ঘুমিয়েছেন?</label>
+            <select name="q4" required>
+    <option value="" disabled selected>ঘুমের মান</option>
+    <option value="100">খুব ভালো</option>
+    <option value="75">ভালো</option>
+    <option value="50">মাঝারি</option>
+    <option value="25">খারাপ</option>
+    <option value="0">একেবারে খারাপ</option>
+  </select>
+
+  <label>৫. আজ আপনি কতটা মনোযোগী বোধ করছেন?</label>
+  <select name="q5" required>
+    <option value="" disabled selected>মনোযোগের স্তর</option>
+    <option value="100">খুব মনোযোগী</option>
+    <option value="75">মনোযোগী</option>
+    <option value="50">মাঝারি</option>
+    <option value="25">মনোযোগ কম</option>
+    <option value="0">মনোযোগ একেবারে নেই</option>
+  </select>
+
+  <label>৬. আপনি কি আজ কৃতজ্ঞ বা আনন্দিত কিছু অনুভব করেছেন?</label>
+  <select name="q6" required>
+    <option value="" disabled selected>অভিজ্ঞতা</option>
+    <option value="100">হ্যাঁ, খুব বেশি</option>
+    <option value="75">হ্যাঁ, কিছুটা</option>
+    <option value="50">মাঝামাঝি</option>
+    <option value="25">একটু কম</option>
+    <option value="0">না</option>
+  </select>
+
+  <button type="submit">ফলাফল দেখুন</button>
+</form>
+    </div>
+
+    <div class="result-card">
+      <h2>আপনার মানসিক অবস্থা</h2>
+      <div class="circle-container">
+        <svg class="progress-circle" width="200" height="200">
+          <circle cx="100" cy="100" r="90" stroke="#b2dfdb" stroke-width="15" fill="none"/>
+          <circle cx="100" cy="100" r="90" stroke="#004d40" stroke-width="15" fill="none"
+                  stroke-dasharray="565.48" stroke-dashoffset="565.48" stroke-linecap="round"/>
+        </svg>
+        <div class="circle-text" id="moodPercent">0%</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const form = document.getElementById('checkinForm');
+    const progressCircle = document.querySelector('.progress-circle circle:nth-child(2)');
+    const moodPercent = document.getElementById('moodPercent');
+
+    const radius = 90;
+    const circumference = 2 * Math.PI * radius;
+    progressCircle.style.strokeDasharray = circumference;
+    progressCircle.style.strokeDashoffset = circumference;
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const q1 = parseInt(form.q1.value);
+      const q2 = parseInt(form.q2.value);
+      const q3 = parseInt(form.q3.value);
+      const avg = Math.round((q1 + q2 + q3)/3);
+
+      const offset = circumference - (avg / 100) * circumference;
+      progressCircle.style.strokeDashoffset = offset;
+      moodPercent.textContent = avg + "%";
+    });
+  </script>
+</body>
+</html>       

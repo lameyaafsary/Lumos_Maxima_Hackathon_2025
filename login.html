@@ -34,7 +34,7 @@
           <label for="upazila">উপজেলা:</label>
           <input type="text" id="upazila" name="upazila" placeholder="যেমন: কালিয়াকৈর" required>
 
-          <label for="union">ইউনিয়ন:</label>
+          <label for="union">ইউনিয়ন:</label>
           <input type="text" id="union" name="union" placeholder="যেমন: চন্দ্রা" required>
 
           <button type="submit">সাবমিট</button>
@@ -47,6 +47,14 @@
     </footer>
   </main>
 
- 
+</form>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  window.location.href = 'dashboard.html'; 
+});
+</script>
+
 </body>
 </html>

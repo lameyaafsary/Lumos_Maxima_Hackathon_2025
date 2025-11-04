@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>স্বাস্থ্য সহায়তা ড্যাশবোর্ড</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="dash.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>স্বাস্থ্য সহায়তা ড্যাশবোর্ড</h1>
+    <button class="logout-btn" onclick="logout()">লগ আউট</button>
+  </header>
+
+  <main class="dashboard">
+    <div class="features">
+      <a href="f1.html" class="feature-card"> 🧠 মানসিক চেক-ইন</a>
+      <a class="feature-card" href="map.html"> 🗺️হেলথ ম্যাপ/লিস্ট</a>
+      <a href="f4.html" class="feature-card">🌤️ মৌসুমি টিপস</a>
+      <a href="f3.html" class="feature-card">👩‍👧 মা ও শিশু</a>
+      <a href="f5.html" class="feature-card">⚕️লক্ষণ ও সচেতনতা</a>
+      <a href="f6.html" class="feature-card">🎤 ভয়েস সহায়ক</a>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <small>© 2025 স্বাস্থ্য সহায়তা</small>
+  </footer>
+
+  <script>
+    function logout(){
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
